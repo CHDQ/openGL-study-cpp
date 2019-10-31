@@ -1,0 +1,13 @@
+angelica/target/
+.metadata/
+RemoteSystemsTempFiles/
+/target/*
+.idea/
+*.iml
+*.log
+*.pyc
+conf/*
+package/*.tar.gz
+temp/
+*.DS_Store
+cmake-build-debug/
