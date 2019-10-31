@@ -54,10 +54,11 @@ void DrawTriangle::beforeRender() {
     vertexShader = glCreateShader(GL_VERTEX_SHADER);//创建顶点着色器
     char *vertexShaderSource = "#version 330 core\n"
                                "layout (location = 0) in vec3 aPos;\n"
-                               "\n"
+                               "out vec4 vertexColor; // 为片段着色器指定一个颜色输出\n"
                                "void main()\n"
                                "{\n"
                                "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                               "    vertexColor = vec4(0.5, 0.0, 0.0, 1.0); // 把输出变量设置为暗红色\n"
                                "}";
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
@@ -71,10 +72,10 @@ void DrawTriangle::beforeRender() {
 
     char *fragmentShaderSource = "#version 330 core\n"
                                  "out vec4 FragColor;\n"
-                                 "\n"
+                                 "in vec4 vertexColor; // 从顶点着色器传来的输入变量（名称相同、类型相同）\n"
                                  "void main()\n"
                                  "{\n"
-                                 "    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                 "    FragColor = vertexColor;\n"//颜色有上一个shader传递过来，只需要类型和名称一致就可以
                                  "} ";
     unsigned int fragmentShader;
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);//创建片段着色器

@@ -9,6 +9,19 @@
 
 /**
 *@author qiong.duan
+ *
+ *--------------------------------------------------------------
+ * run in main function
+ *
+ * #include "base/OpenWindow.h"
+ * #include "example/header/DrawTriangle.h"
+ *
+ *int main() {
+ *  DrawTriangle drawTriangle;
+ *  OpenWindow openWindow(&drawTriangle);
+ *  return 0;
+ *}
+ *  ------------------------------------------------------------
 */
 class DrawTriangle : public Executor {
 public:
