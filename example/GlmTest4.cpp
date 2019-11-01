@@ -4,10 +4,17 @@
 
 #include <glad/glad.h>
 #include <iostream>
-#include "header/TextureTest3.h"
+#include "header/GlmTest4.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <GLFW/glfw3.h>
+
+#define STB_IMAGE_IMPLEMENTATION
+
 #include "../stb_image.h"
 
-void TextureTest3::beforeRender() {
+void GlmTest4::beforeRender() {
     float vertices[] = {
 //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
             0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,   // 右上
@@ -28,9 +35,10 @@ void TextureTest3::beforeRender() {
                                      "layout (location = 2) in vec2 aTexCoord;"
                                      "out vec3 ourColor; // 向片段着色器输出一个颜色;\n"
                                      "out vec2 TexCoord;"
+                                     "uniform mat4 transform;"
                                      "void main()\n"
                                      "{\n"
-                                     "    gl_Position = vec4(aPos, 1.0);\n"
+                                     "    gl_Position = transform * vec4(aPos, 1.0);\n"
                                      "    ourColor = aColor; // 把输出变量设置为暗红色\n"
                                      "TexCoord = aTexCoord;"
                                      "}";
@@ -94,9 +102,14 @@ void TextureTest3::beforeRender() {
     stbi_image_free(data);
 }
 
-void TextureTest3::doRender() {
+void GlmTest4::doRender() {
     glBindTexture(GL_TEXTURE_2D, texture);
     glBindVertexArray(VAO);
-//    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glm::mat4 trans = glm::mat4(1.0f);
+    trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+    trans = glm::rotate(trans, (float) glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));//按时间变化大小
+    trans = glm::translate(trans, glm::vec3(0.5f, 0.5f, 0.0f));
+    unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
     glDrawArrays(GL_TRIANGLES, 0, 3); //画三角形
 }

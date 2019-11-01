@@ -23,7 +23,7 @@
  *}
  *  ------------------------------------------------------------
 */
-class DrawTriangle : public Executor {
+class DrawTriangle1 : public Executor {
 public:
     void doRender() override;
 

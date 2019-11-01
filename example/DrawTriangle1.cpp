@@ -5,12 +5,12 @@
 #include "glad/glad.h"
 #include <GLFW/glfw3.h>
 #include <cmath>
-#include "header/DrawTriangle.h"
+#include "header/DrawTriangle1.h"
 
 
 using namespace std;
 
-void DrawTriangle::doRender() {
+void DrawTriangle1::doRender() {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);//设置绘制模式，填充或者划线GL_LINE
     glUseProgram(shaderProgram);
     glBindVertexArray(VAO);
@@ -25,7 +25,7 @@ void DrawTriangle::doRender() {
 //    glBindVertexArray(0);
 }
 
-void DrawTriangle::beforeRender() {
+void DrawTriangle1::beforeRender() {
 //    float vertices[] = { 绘制三角形
 //            -0.5f, -0.5f, 0.0f,
 //            0.5f, -0.5f, 0.0f,

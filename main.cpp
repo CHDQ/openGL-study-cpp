@@ -1,12 +1,9 @@
-#include <iostream>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include "base/OpenWindow.h"
-#include "example/header/TextureTest3.h"
+#include "example/header/GlmTest4.h"
 
 int main() {
-    TextureTest3 textureTest3;
-    OpenWindow openWindow(&textureTest3);
+    GlmTest4 glmTest4;
+    OpenWindow openWindow(&glmTest4);
     return 0;
 }
 
