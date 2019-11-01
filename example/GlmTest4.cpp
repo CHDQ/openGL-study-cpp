@@ -13,6 +13,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #include "../stb_image.h"
+#include "../base/MyShader.h"
 
 void GlmTest4::beforeRender() {
     float vertices[] = {
@@ -28,49 +29,6 @@ void GlmTest4::beforeRender() {
     glBindBuffer(GL_ARRAY_BUFFER, VBO);//绑定缓冲区
     glBindVertexArray(VAO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);//将顶点复制到缓冲区，第二个参数以字节为单位,三角形
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);//创建顶点着色器;
-    const char *vertexShaderSource = "#version 330 core\n"
-                                     "layout (location = 0) in vec3 aPos;\n"
-                                     "layout (location = 1) in vec3 aColor; // 颜色变量的属性位置值为 1\n"
-                                     "layout (location = 2) in vec2 aTexCoord;"
-                                     "out vec3 ourColor; // 向片段着色器输出一个颜色;\n"
-                                     "out vec2 TexCoord;"
-                                     "uniform mat4 transform;"
-                                     "void main()\n"
-                                     "{\n"
-                                     "    gl_Position = transform * vec4(aPos, 1.0);\n"
-                                     "    ourColor = aColor; // 把输出变量设置为暗红色\n"
-                                     "TexCoord = aTexCoord;"
-                                     "}";
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-    const char *fragmentShaderSource = "#version 330 core\n"
-                                       "out vec4 FragColor;\n"
-                                       "in vec3 ourColor; // 从顶点着色器传来的输入变量（名称相同、类型相同）\n"
-                                       "in vec2 TexCoord;\n"
-                                       "uniform sampler2D ourTexture;\n"
-                                       "void main()\n"
-                                       "{\n"
-                                       "    FragColor = texture(ourTexture, TexCoord);\n"//全局变量
-                                       "} ";
-    unsigned int fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);//创建片段着色器
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-    int success;
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);//查看着色器是否编译成功
-    if (!success) {
-        char infoLog[512];
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);//不成功的时候获取错误信息
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    glDeleteShader(vertexShader);//删除已经链接的shader
-    glDeleteShader(fragmentShader);
-    glUseProgram(shaderProgram);
     // 位置属性
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *) 0);
     glEnableVertexAttribArray(0);
@@ -100,6 +58,9 @@ void GlmTest4::beforeRender() {
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
+    MyShader myShader("E:\\workspace\\3d_rebuild\\opengl\\base\\shader_file\\GlmTest4.vs",
+                      "E:\\workspace\\3d_rebuild\\opengl\\base\\shader_file\\GlmTest4.fs");
+    shaderProgram = myShader.getShaderId();
 }
 
 void GlmTest4::doRender() {
