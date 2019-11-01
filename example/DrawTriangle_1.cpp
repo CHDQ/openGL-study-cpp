@@ -2,8 +2,11 @@
 // Created by root on 2019/10/31.
 //
 #include <iostream>
-#include "header/DrawTriangle.h"
 #include "glad/glad.h"
+#include <GLFW/glfw3.h>
+#include <cmath>
+#include "header/DrawTriangle.h"
+
 
 using namespace std;
 
@@ -13,6 +16,11 @@ void DrawTriangle::doRender() {
     glBindVertexArray(VAO);
 //    glDrawArrays(GL_TRIANGLES, 0, 3); //画三角形
 //EBO不能单独使用必须和VBO配合使用，VBO可以单独使用
+    float timeValue = glfwGetTime();
+    float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+    int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+    glUseProgram(shaderProgram);//创建uniform之前不需要调用，但是更新之前一定要调用
+    glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);//画正方形，当使用索引缓冲对象的时候，最后一个参数为0，否则是一个索引数组
 //    glBindVertexArray(0);
 }
@@ -52,14 +60,14 @@ void DrawTriangle::beforeRender() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);//将顶点复制到缓冲区，第二个参数以字节为单位，正方形
     unsigned int vertexShader;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);//创建顶点着色器
-    char *vertexShaderSource = "#version 330 core\n"
-                               "layout (location = 0) in vec3 aPos;\n"
-                               "out vec4 vertexColor; // 为片段着色器指定一个颜色输出\n"
-                               "void main()\n"
-                               "{\n"
-                               "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-                               "    vertexColor = vec4(0.5, 0.0, 0.0, 1.0); // 把输出变量设置为暗红色\n"
-                               "}";
+    const char *vertexShaderSource = "#version 330 core\n"
+                                     "layout (location = 0) in vec3 aPos;\n"
+                                     "out vec4 vertexColor; // 为片段着色器指定一个颜色输出\n"
+                                     "void main()\n"
+                                     "{\n"
+                                     "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                                     "    vertexColor = vec4(0.5, 0.0, 0.0, 1.0); // 把输出变量设置为暗红色\n"
+                                     "}";
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
     int success;
@@ -70,13 +78,15 @@ void DrawTriangle::beforeRender() {
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
-    char *fragmentShaderSource = "#version 330 core\n"
-                                 "out vec4 FragColor;\n"
-                                 "in vec4 vertexColor; // 从顶点着色器传来的输入变量（名称相同、类型相同）\n"
-                                 "void main()\n"
-                                 "{\n"
-                                 "    FragColor = vertexColor;\n"//颜色有上一个shader传递过来，只需要类型和名称一致就可以
-                                 "} ";
+    const char *fragmentShaderSource = "#version 330 core\n"
+                                       "out vec4 FragColor;\n"
+                                       "in vec4 vertexColor; // 从顶点着色器传来的输入变量（名称相同、类型相同）\n"
+                                       "uniform vec4 ourColor;//设置全局变量\n"
+                                       "void main()\n"
+                                       "{\n"
+                                       // "    FragColor = vertexColor;\n"//颜色有上一个shader传递过来，只需要类型和名称一致就可以
+                                       "    FragColor = ourColor;\n"//全局变量
+                                       "} ";
     unsigned int fragmentShader;
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);//创建片段着色器
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
