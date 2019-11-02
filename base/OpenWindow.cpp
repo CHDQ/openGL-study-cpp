@@ -13,6 +13,7 @@
  */
 
 OpenWindow::OpenWindow(Executor *executor) {
+    this->executor = executor;
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);//openGL版本为3.3，大版本
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);//小版本
@@ -35,7 +36,7 @@ OpenWindow::OpenWindow(Executor *executor) {
     executor->beforeRender();
     while (!glfwWindowShouldClose(window)) {//循环防止程序关闭
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);//设置清屏颜色
-        glClear(GL_COLOR_BUFFER_BIT);//清屏
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//清屏
         executor->doRender();
         processInput(window);
         glfwSwapBuffers(window);
@@ -65,4 +66,5 @@ void OpenWindow::framebuffer_size_callback(GLFWwindow *window, int width, int he
 void OpenWindow::OpenWindow::processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+    executor->doInputProcess(window);
 }

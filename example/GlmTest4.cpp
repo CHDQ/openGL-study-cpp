@@ -58,9 +58,10 @@ void GlmTest4::beforeRender() {
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
-    MyShader myShader("E:\\workspace\\3d_rebuild\\opengl\\base\\shader_file\\GlmTest4.vs",
-                      "E:\\workspace\\3d_rebuild\\opengl\\base\\shader_file\\GlmTest4.fs");
+    MyShader myShader("base\\shader_file\\GlmTest4.vs",
+                      "base\\shader_file\\GlmTest4.fs");
     shaderProgram = myShader.getShaderId();
+    myShader.use();
 }
 
 void GlmTest4::doRender() {

@@ -11,13 +11,16 @@
 
 class OpenWindow {
 public:
-    OpenWindow(Executor* excutor);
+    explicit OpenWindow(Executor *executor);
 
     ~OpenWindow();
 
     static void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
     void processInput(GLFWwindow *window);
+
+private:
+    Executor *executor;
 
 
 };

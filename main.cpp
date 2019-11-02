@@ -1,9 +1,9 @@
 #include "base/OpenWindow.h"
-#include "example/header/GlmTest4.h"
+#include "example/header/LightTest6.h"
 
 int main() {
-    GlmTest4 glmTest4;
-    OpenWindow openWindow(&glmTest4);
+    LightTest6 lightTest6;
+    OpenWindow openWindow(&lightTest6);
     return 0;
 }
 

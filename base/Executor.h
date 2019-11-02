@@ -5,6 +5,8 @@
 #ifndef OPENGL_EXECUTOR_H
 #define OPENGL_EXECUTOR_H
 
+#include "glad/glad.h"
+#include <GLFW/glfw3.h>
 
 /**
 *@author qiong.duan
@@ -14,6 +16,9 @@ public:
     virtual void beforeRender() = 0;
 
     virtual void doRender() = 0;
+
+    virtual void doInputProcess(GLFWwindow *window) = 0;
+
 };
 
 
