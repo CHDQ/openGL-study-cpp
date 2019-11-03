@@ -101,6 +101,7 @@ void LightTest6::doRender() {
     glBindVertexArray(lightVAO);
     lightShader->use();
     model = glm::mat4(1.0f);
+
     model = glm::translate(model, glm::vec3(0.5, 0.6, 2));
     lightShader->setMat4("model", model);
     lightShader->setMat4("view", view);
