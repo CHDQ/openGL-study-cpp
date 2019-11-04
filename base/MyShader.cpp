@@ -5,7 +5,9 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <glm/mat4x4.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "MyShader.h"
 
 MyShader::MyShader(const char *vertexPath, const char *fragmentPath) {

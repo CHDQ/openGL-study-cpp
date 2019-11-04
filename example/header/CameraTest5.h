@@ -5,7 +5,10 @@
 #ifndef OPENGL_CAMERATEST5_H
 #define OPENGL_CAMERATEST5_H
 
-
+#include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "../../base/Executor.h"
 #include "../../base/MyShader.h"
 
